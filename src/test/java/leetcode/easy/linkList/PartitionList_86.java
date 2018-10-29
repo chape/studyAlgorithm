@@ -3,8 +3,8 @@ package leetcode.easy.linkList;
 import leetcode.base.ListNode;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Created by ChaoChao on 2018/10/28.
@@ -20,7 +20,11 @@ import java.util.Set;
 public class PartitionList_86 {
 
     @Test
-    public void testHasCycle() {
+    public void testPartition() {
+
+//        ListNode a1 = new ListNode(2);
+//        ListNode a2 = new ListNode(1);
+//        a1.next = a2;
 
         ListNode a1 = new ListNode(1);
         ListNode a2 = new ListNode(4);
@@ -34,18 +38,79 @@ public class PartitionList_86 {
         a4.next = a5;
         a5.next = a6;
 
-        ListNode result = partition(a1, 3);
+        ListNode result = partition0(a1, 3);
         ListNode.print("分隔后的列表", result);
     }
 
     /**
-     * 快慢指针
+     * 临时头节点
      * @param head
      * @return
      */
-    public ListNode partition(ListNode head, int x) {
+    public ListNode partition0(ListNode head, int x) {
+        ListNode lessHead = new ListNode(0);
+        ListNode lessPt = lessHead;
 
-        return null;
+        ListNode moreHead = new ListNode(0);
+        ListNode morePt = moreHead;
+
+        while (null != head) {
+            if(head.val < x) {
+                lessPt.next = head;
+                lessPt = head;
+            } else {
+                morePt.next = head;
+                morePt = head;
+            }
+            head = head.next;
+        }
+
+        morePt.next = null;
+        //小于x的【头指针】 指向 大于x的【头结点】的下一个节点
+        lessPt.next = moreHead.next;
+
+        return lessHead.next;
+    }
+    /**
+     * 双队列
+     * @param head
+     * @return
+     */
+    public ListNode partition1(ListNode head, int x) {
+
+        Queue<ListNode> maxQ = new LinkedList<>();
+        Queue<ListNode> minQ = new LinkedList<>();
+        ListNode newHead = null;
+        while (null != head) {
+            if(head.val < x) {
+                minQ.add(head);
+            } else {
+                maxQ.add(head);
+            }
+            head = head.next;
+        }
+        boolean hasFirst = false;
+        ListNode dummy = new ListNode(0);
+        while (!minQ.isEmpty()) {
+            ListNode ele = minQ.poll();
+            if(!hasFirst) {
+                newHead = ele;
+                hasFirst = true;
+            }
+            dummy.next = ele;
+            dummy = ele;
+        }
+        while (!maxQ.isEmpty()) {
+            ListNode ele = maxQ.poll();
+            if(!hasFirst) {
+                newHead = ele;
+                hasFirst = true;
+            }
+            dummy.next = ele;
+            dummy = ele;
+        }
+        dummy.next = null;
+        return newHead;
     }
 
 }
