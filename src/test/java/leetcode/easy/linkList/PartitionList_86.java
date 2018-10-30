@@ -48,6 +48,7 @@ public class PartitionList_86 {
      * @return
      */
     public ListNode partition0(ListNode head, int x) {
+
         ListNode lessHead = new ListNode(0);
         ListNode lessPt = lessHead;
 

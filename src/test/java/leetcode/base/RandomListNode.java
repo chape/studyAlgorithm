@@ -6,11 +6,11 @@ package leetcode.base;
  */
 public class RandomListNode {
 
-    public int val;
+    public int label;
     public RandomListNode next, random;
 
     public RandomListNode(int x) {
-        val = x;
+        label = x;
     }
 
 }
