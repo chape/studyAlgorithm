@@ -15,7 +15,7 @@ import org.junit.Test;
  输入: 1->2->3->4->5->NULL, m = 2, n = 4
  输出: 1->4->3->2->5->NULL
  */
-public class ReverseList2_92 {
+public class ReverseList_92 {
 
     @Test
     public void testReverseList() {

@@ -20,14 +20,14 @@ public class ReverseList_206 {
 
         ListNode.print("反转前:", head);
 
-        ListNode listNode = reverseList3(head);
+        ListNode listNode = reverseList4(head);
 
         ListNode.print("反转后:", listNode);
 
     }
 
     /**
-     * 迭代法
+     * 迭代法 就地逆置
      * @param head
      * @return
      */
@@ -56,7 +56,7 @@ public class ReverseList_206 {
      * @param head
      * @return
      */
-    public ListNode reverseList3(ListNode head) {
+    public ListNode reverseList1(ListNode head) {
 
         if(null == head || null == head.next) {
             return head;
@@ -73,7 +73,7 @@ public class ReverseList_206 {
          *
          * 即3-2-1 返回newHead 3
          */
-        ListNode newHead = reverseList3(head.next);
+        ListNode newHead = reverseList1(head.next);
         head.next.next = head;
         head.next = null;
 
@@ -81,11 +81,31 @@ public class ReverseList_206 {
     }
 
     /**
+     * 头插法
+     * @param head
+     * @return
+     */
+    public ListNode reverseList2(ListNode head) {
+
+        ListNode dummy = new ListNode(0);
+        ListNode temp = dummy;
+
+        while (null != head) {
+            ListNode next = head.next;
+            head.next = temp.next;
+            temp.next = head;
+            head = next;
+        }
+
+        return temp.next;
+    }
+
+    /**
      * 三指针法
      * @param head
      * @return
      */
-    public ListNode reverseList1(ListNode head) {
+    public ListNode reverseList3(ListNode head) {
 
         if(null == head) {
             return head;
@@ -115,7 +135,7 @@ public class ReverseList_206 {
      * @param head
      * @return
      */
-    public ListNode reverseList2(ListNode head) {
+    public ListNode reverseList4(ListNode head) {
 
         ListNode first = head.next;
         ListNode second;
@@ -132,5 +152,6 @@ public class ReverseList_206 {
 
         return head;
     }
+
 
 }
