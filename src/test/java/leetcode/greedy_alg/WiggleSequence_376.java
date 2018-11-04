@@ -5,7 +5,8 @@ import org.junit.Test;
 
 /**
  * Created by ChaoChao on 2018/11/3.
- * 如果连续数字之间的差严格地在正数和负数之间交替，则数字序列称为摆动序列。第一个差（如果存在的话）可能是正数或负数。少于两个元素的序列也是摆动序列。
+ * 如果连续数字之间的差严格地在正数和负数之间交替，则数字序列称为摆动序列。
+ * 第一个差（如果存在的话）可能是正数或负数。少于两个元素的序列也是摆动序列。
 
  例如， [1,7,4,9,2,5] 是一个摆动序列，因为差值 (6,-3,5,-7,3) 是正负交替出现的。
  相反, [1,4,7,2,5] 和 [1,7,4,5,5] 不是摆动序列，第一个序列是因为它的前两个差值都是正数，第二个序列是因为它的最后一个差值为零。
@@ -35,19 +36,59 @@ public class WiggleSequence_376 {
 
     @Test
     public void testWiggleMaxLength() {
-        int[] nums = {1,17,5,10,13,15,10,5,16,8};
+        int[] nums = {3,3,3,2,5};
         int result = wiggleMaxLength(nums);
         System.out.println(result);
-        Assert.assertEquals(7,result);
+        Assert.assertEquals(3,result);
     }
 
     /**
-     *
+     * 状态机 + 贪心(每次同一单调趋势取最后一个元素作为摇摆元素)
      * @param nums
      * @return
      */
     public int wiggleMaxLength(int[] nums) {
 
-        return 0;
+        if(nums.length < 2) {
+            return nums.length;
+        }
+
+        // 状态机 初始状态
+        final int BEGIN = 0;
+        // 上升状态
+        final int UP = 1;
+        // 下降状态
+        final int DOWN = 2;
+        int state = BEGIN;
+        // 记录摇摆次数，摇摆一次 +1，从1开始
+        int maxLength = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+            switch (state) {
+                case BEGIN:
+                    if(nums[i]-nums[i-1] > 0) {
+                        state = UP;
+                        maxLength++;
+                    }
+                    if(nums[i]-nums[i-1] < 0) {
+                        state = DOWN;
+                        maxLength++;
+                    }
+                    break;
+                case UP:
+                    if(nums[i]-nums[i-1] < 0) {
+                        state = DOWN;
+                        maxLength++;
+                    }
+                    break;
+                case DOWN:
+                    if(nums[i]-nums[i-1] > 0) {
+                        state = UP;
+                        maxLength++;
+                    }
+                    break;
+            }
+        }
+        return maxLength;
     }
 }
