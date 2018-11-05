@@ -31,12 +31,31 @@ public class JumpGame2_45 {
     }
 
     /**
-     * 贪心()
+     * 贪心(先将之前最大可跳索引记录下 直到遍历到遍历前所能跳跃的索引距离为止)
      * @param nums
      * @return
      */
     public int jump(int[] nums) {
+        // 小于2个元素的数组 不需要跳
+        int len = nums.length;
+        if(len < 2) {
+            return 0;
+        }
+        //大于2个以上的元素 必定会跳一次
+        int minJump = 1;
+        // 先将之前最大可跳索引记录下 直到遍历到遍历前所能跳跃的索引距离为止
+        int preMaxIndex = nums[0];
+        int curMaxIndex = nums[0];
+        for (int i = 0; i < len; i++) {
+            if(i > curMaxIndex) {
+                minJump++;
+                curMaxIndex = preMaxIndex;
+            }
+            if(preMaxIndex < nums[i] + i) {
+                preMaxIndex = nums[i] + i;
+            }
+        }
 
-        return 0;
+        return minJump;
     }
 }
