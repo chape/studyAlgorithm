@@ -2,7 +2,7 @@ package leetcode.recursion_backtracking_devide;
 
 import org.junit.Test;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ChaoChao on 2018/11/3.
@@ -42,7 +42,46 @@ public class Subsets2_90 {
      * @return
      */
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        return null;
+        Arrays.sort(nums);
+        List<List<Integer>> list = new ArrayList<>();
+        Set<List<Integer>> set = new HashSet<>();
+        List<Integer> subList = new ArrayList<>();
+        list.add(subList);
+        set.add(subList);
+        generate(0, nums, new ArrayList<>(), list, set);
+        return list;
+    }
+
+    private void generate(int index, int[] nums, List<Integer> subList, List<List<Integer>> list, Set<List<Integer>> set) {
+        if(index >= nums.length) {
+            return;
+        }
+        subList.add(nums[index]);
+        if(!contain(subList,set)) {
+            list.add(new ArrayList<>(subList));
+            set.add(new ArrayList<>(subList));
+        }
+        generate(index+1, nums, subList, list, set);
+        subList.remove(subList.size() - 1);
+        generate(index+1, nums, subList, list, set);
+    }
+
+    private boolean contain(List<Integer> subSet, Set<List<Integer>> set) {
+        for (List<Integer> ele : set) {
+            if(ele.size() == subSet.size()) {
+                Collections.sort(ele);
+                Collections.sort(subSet);
+                for (int i = 0; i < ele.size(); i++) {
+                    if(ele.get(i) != subSet.get(i)) {
+                        break;
+                    }
+                    if(i == ele.size()-1) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 }

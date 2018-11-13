@@ -46,11 +46,10 @@ public class Subsets_78 {
      */
     public List<List<Integer>> subsets0(int[] nums) {
         List<List<Integer>> set = new ArrayList<>();
-        List<Integer> subSet = new ArrayList<>();
         //添加空集
-        set.add(subSet);
+        set.add(new ArrayList<>());
         //递归回溯 从数组第0个索引开始放入子集
-        generate(0,nums,subSet,set);
+        generate(0,nums,new ArrayList<>(),set);
         return set;
     }
 
