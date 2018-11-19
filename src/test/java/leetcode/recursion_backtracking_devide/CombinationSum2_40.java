@@ -2,7 +2,7 @@ package leetcode.recursion_backtracking_devide;
 
 import org.junit.Test;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ChaoChao on 2018/11/3.
@@ -54,7 +54,50 @@ public class CombinationSum2_40 {
      * @return
      */
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        return null;
+
+        Arrays.sort(candidates);
+        List<List<Integer>> result = new ArrayList<>();
+        Set<List<Integer>> set = new HashSet<>();
+        generate(0, candidates,target,0,new ArrayList<>(),set,result);
+        return result;
+    }
+
+    public void generate(int index, int[] cans, int target, int sum, List<Integer> eles, Set<List<Integer>> set, List<List<Integer>> list) {
+        if(index >= cans.length || sum > target) {
+            return;
+        }
+        sum += cans[index];
+        eles.add(cans[index]);
+        if(target == sum && !contain(eles,set)) {
+            set.add(new ArrayList<>(eles));
+            list.add(new ArrayList<>(eles));
+        }
+        generate(index+1,cans,target,sum,eles,set,list);
+        sum -= cans[index];
+        eles.remove(eles.size()-1);
+        generate(index+1,cans,target,sum,eles,set,list);
+
+    }
+
+    private boolean contain(List<Integer> subSet, Set<List<Integer>> set) {
+        int subSize = subSet.size();
+        Collections.sort(subSet);
+        for (List<Integer> ele : set) {
+            if(ele.size() != subSize) {
+                continue;
+            }
+            Collections.sort(ele);
+
+            for (int i = 0; i < subSize; i++) {
+                if(ele.get(i) != subSet.get(i)) {
+                    break;
+                }
+                if(i == subSize-1 && ele.get(i) == subSet.get(i)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

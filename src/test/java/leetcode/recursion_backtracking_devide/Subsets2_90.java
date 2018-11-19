@@ -67,17 +67,20 @@ public class Subsets2_90 {
     }
 
     private boolean contain(List<Integer> subSet, Set<List<Integer>> set) {
+        int subSize = subSet.size();
+        Collections.sort(subSet);
         for (List<Integer> ele : set) {
-            if(ele.size() == subSet.size()) {
-                Collections.sort(ele);
-                Collections.sort(subSet);
-                for (int i = 0; i < ele.size(); i++) {
-                    if(ele.get(i) != subSet.get(i)) {
-                        break;
-                    }
-                    if(i == ele.size()-1) {
-                        return true;
-                    }
+            if(ele.size() != subSize) {
+                continue;
+            }
+            Collections.sort(ele);
+
+            for (int i = 0; i < subSize; i++) {
+                if(ele.get(i) != subSet.get(i)) {
+                    break;
+                }
+                if(i == subSize-1 && ele.get(i) == subSet.get(i)) {
+                    return true;
                 }
             }
         }
