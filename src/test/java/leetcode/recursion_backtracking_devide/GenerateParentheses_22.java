@@ -2,6 +2,7 @@ package leetcode.recursion_backtracking_devide;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,28 @@ public class GenerateParentheses_22 {
      * @return
      */
     public List<String> generateParenthesis(int n) {
-        return null;
+        ArrayList<String> result = new ArrayList<>();
+        generate("",n,n,result);
+        return result;
+    }
+
+    /**
+     * 左括号要优先排列在右括号前面
+     * @param item 符合的括号排列
+     * @param left 左括号个数
+     * @param right 右括号个数
+     * @param list
+     */
+    private void generate(String item, int left, int right, List<String> list) {
+        if (left == 0 && right == 0) {
+            list.add(item);
+            return;
+        }
+        if(left > 0) {
+            generate(item+"(", left-1,right,list);
+        }
+        if(left < right) {
+            generate(item+")", left,right-1,list);
+        }
     }
 }
